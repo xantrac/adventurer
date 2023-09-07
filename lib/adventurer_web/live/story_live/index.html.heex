@@ -1,0 +1,36 @@
+<ul role="list" class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+  <%= for {_, story} <- @streams.stories do %>
+    <li class="col-span-1 flex flex-col divide-y divide-gray-200 rounded-lg bg-white text-center shadow">
+      <.link patch={~p"/stories/#{story.id}"}>
+        <div class="flex flex-1 flex-col p-8">
+          <img
+            class="mx-auto h-32 w-32 flex-shrink-0 rounded-full"
+            src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60"
+            alt=""
+          />
+          <h3 class="mt-6 text-sm font-medium text-gray-900"><%= story.title %></h3>
+          <dl class="mt-1 flex flex-grow flex-col justify-between">
+            <dt class="sr-only"><%= story.title %></dt>
+            <dd class="text-sm text-gray-500">Paradigm Representative</dd>
+          </dl>
+        </div>
+      </.link>
+    </li>
+  <% end %>
+</ul>
+
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="story-modal"
+  show
+  on_cancel={JS.patch(~p"/stories")}
+>
+  <.live_component
+    module={AdventurerWeb.StoryLive.FormComponent}
+    id={@story.id || :new}
+    title={@page_title}
+    action={@live_action}
+    story={@story}
+    patch={~p"/stories"}
+  />
+</.modal>
