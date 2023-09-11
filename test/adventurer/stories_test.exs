@@ -114,4 +114,56 @@ defmodule Adventurer.StoriesTest do
       assert %Ecto.Changeset{} = Stories.change_node(node)
     end
   end
+
+  describe "actions" do
+    alias Adventurer.Stories.Action
+
+    import Adventurer.StoriesFixtures
+
+    @invalid_attrs %{}
+
+    test "list_actions/0 returns all actions" do
+      action = action_fixture()
+      assert Stories.list_actions() == [action]
+    end
+
+    test "get_action!/1 returns the action with given id" do
+      action = action_fixture()
+      assert Stories.get_action!(action.id) == action
+    end
+
+    test "create_action/1 with valid data creates a action" do
+      valid_attrs = %{}
+
+      assert {:ok, %Action{} = action} = Stories.create_action(valid_attrs)
+    end
+
+    test "create_action/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Stories.create_action(@invalid_attrs)
+    end
+
+    test "update_action/2 with valid data updates the action" do
+      action = action_fixture()
+      update_attrs = %{}
+
+      assert {:ok, %Action{} = action} = Stories.update_action(action, update_attrs)
+    end
+
+    test "update_action/2 with invalid data returns error changeset" do
+      action = action_fixture()
+      assert {:error, %Ecto.Changeset{}} = Stories.update_action(action, @invalid_attrs)
+      assert action == Stories.get_action!(action.id)
+    end
+
+    test "delete_action/1 deletes the action" do
+      action = action_fixture()
+      assert {:ok, %Action{}} = Stories.delete_action(action)
+      assert_raise Ecto.NoResultsError, fn -> Stories.get_action!(action.id) end
+    end
+
+    test "change_action/1 returns a action changeset" do
+      action = action_fixture()
+      assert %Ecto.Changeset{} = Stories.change_action(action)
+    end
+  end
 end

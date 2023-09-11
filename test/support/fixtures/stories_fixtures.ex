@@ -33,4 +33,18 @@ defmodule Adventurer.StoriesFixtures do
 
     node
   end
+
+  @doc """
+  Generate a action.
+  """
+  def action_fixture(attrs \\ %{}) do
+    {:ok, action} =
+      attrs
+      |> Enum.into(%{
+
+      })
+      |> Adventurer.Stories.create_action()
+
+    action
+  end
 end

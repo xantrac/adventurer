@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@editorjs/editorjs": "^2.28.0",
+    "editorjs-html": "^3.4.3",
+    "trix": "^2.0.5"
+  }
+}

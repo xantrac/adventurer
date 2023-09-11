@@ -4,9 +4,10 @@ defmodule Adventurer.Stories.Node do
 
   schema "nodes" do
     field :title, :string
-    field :body, :string
+    field :body, :map
 
     belongs_to :story, Adventurer.Stories.Story
+    has_many :choices, Adventurer.Stories.Choice
 
     timestamps()
   end

@@ -2,8 +2,7 @@ defmodule Adventurer.Stories do
   import Ecto.Query, warn: false
   alias Adventurer.Repo
 
-  alias Adventurer.Stories.Story
-  alias Adventurer.Stories.Node
+  alias Adventurer.Stories.{Story, Node, Choice}
 
   def list_stories do
     Repo.all(Story)
@@ -34,11 +33,10 @@ defmodule Adventurer.Stories do
     Story.changeset(story, attrs)
   end
 
-  def list_nodes do
-    Repo.all(Node)
+  def get_node!(id) do
+    Repo.get!(Node, id)
+    |> Repo.preload(choices: [choice_targets: :target_node])
   end
-
-  def get_node!(id), do: Repo.get!(Node, id)
 
   def create_node(attrs \\ %{}) do
     %Node{}
@@ -58,5 +56,15 @@ defmodule Adventurer.Stories do
 
   def change_node(%Node{} = node, attrs \\ %{}) do
     Node.changeset(node, attrs)
+  end
+
+  def change_choice(%Choice{} = choice, attrs \\ %{}) do
+    Choice.changeset(choice, attrs)
+  end
+
+  def create_choice(attrs \\ %{}) do
+    %Choice{}
+    |> Choice.changeset(attrs)
+    |> Repo.insert()
   end
 end

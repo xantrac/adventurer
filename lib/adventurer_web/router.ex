@@ -60,9 +60,12 @@ defmodule AdventurerWeb.Router do
 
     live_session :require_authenticated_user,
       on_mount: [{AdventurerWeb.UserAuth, :ensure_authenticated}] do
+      live "/stories/new", Author.StoryLive.Index, :new
       live "/stories/:id", Author.StoryLive.Show, :show
+      live "/stories/:id/preview", Author.StoryLive.Show, :preview
       live "/stories/:id/nodes/new", NodeLive.New, :new
-      live "/stories/:id/nodes/:node_id/show", NodeLive.Show, :show
+      live "/stories/:id/nodes/:node_id", NodeLive.Show, :show
+      live "/stories/:id/nodes/:node_id/choices/new", NodeLive.Show, :new_choice
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
       live "/stories", Author.StoryLive.Index, :index
