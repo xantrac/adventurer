@@ -9,7 +9,7 @@ defmodule AdventurerWeb.StoryLive.FormComponent do
     <div>
       <.header>
         <%= @title %>
-        <:subtitle>Use this form to manage story records in your database.</:subtitle>
+        <:subtitle>Create a new story</:subtitle>
       </.header>
 
       <.simple_form
@@ -69,7 +69,9 @@ defmodule AdventurerWeb.StoryLive.FormComponent do
   end
 
   defp save_story(socket, :new, story_params) do
-    case Stories.create_story(story_params) do
+    current_user = socket.assigns.user
+
+    case Stories.create_story(story_params, current_user) do
       {:ok, story} ->
         notify_parent({:saved, story})
 

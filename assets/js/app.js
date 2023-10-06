@@ -1,48 +1,34 @@
-// If you want to use Phoenix channels, run `mix help phx.gen.channel`
-// to get started and then uncomment the line below.
-// import "./user_socket.js"
-
-// You can include dependencies in two ways.
-//
-// The simplest option is to put them in assets/vendor and
-// import them using relative paths:
-//
-//     import "../vendor/some-package.js"
-//
-// Alternatively, you can `npm install some-package --prefix assets` and import
-// them using a path starting with the package name:
-//
-//     import "some-package"
-//
-
-// Include phoenix_html to handle method=PUT/DELETE in forms and buttons.
 import "phoenix_html";
-// Establish Phoenix Socket and LiveView configuration.
 import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import topbar from "../vendor/topbar";
-import EditorJS from "@editorjs/editorjs";
+import { mount } from "./mounter";
+import { deserialise } from "kitsu-core";
+
 let Hooks = {};
 
-Hooks.EditorJS = {
+Hooks.NodesBuilder = {
   mounted() {
-    let editor;
-
-    this.handleEvent("initialize_editor", ({ data }) => {
-      const config = data ? { data } : {};
-      editor = new EditorJS(config);
+    this.unmountComponent = mount(this.el.id, this.opts());
+    this.handleEvent("react.update_story", ({ story }) => {
+      mount(this.el.id, { story: deserialise(story) });
     });
+  },
 
-    this.handleEvent("save_editor", () => {
-      editor
-        .save()
-        .then((outputData) => {
-          this.pushEvent("save_node", { data: outputData });
-        })
-        .catch((error) => {
-          console.log("Saving failed: ", error);
-        });
-    });
+  showNodeEditor(item) {
+    this.pushEventTo(this.el, "ui.start_edit", { item });
+  },
+
+  destroyed() {
+    if (!this.unmountComponent) {
+      return;
+    }
+
+    this.unmountComponent(this.el);
+  },
+
+  opts() {
+    return {};
   },
 };
 

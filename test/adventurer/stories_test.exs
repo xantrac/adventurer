@@ -60,7 +60,7 @@ defmodule Adventurer.StoriesTest do
   end
 
   describe "nodes" do
-    alias Adventurer.Stories.Node
+    alias Adventurer.Nodes.Node
 
     import Adventurer.StoriesFixtures
 

@@ -1,9 +1,9 @@
 defmodule AdventurerWeb.NodeLive.Show do
   use AdventurerWeb, :live_view
-  alias Adventurer.Stories
+  alias Adventurer.{Stories, Nodes}
 
   def mount(%{"id" => story_id, "node_id" => node_id}, _session, socket) do
-    node = Stories.get_node!(node_id)
+    node = Nodes.get_node!(node_id)
     story = Stories.get_story!(story_id)
 
     nodes = story.nodes |> Enum.filter(&(&1.id != node.id))
@@ -12,8 +12,9 @@ defmodule AdventurerWeb.NodeLive.Show do
       socket
       |> assign(:page_title, node.title)
       |> assign(:node, node)
+      |> assign(:story, story)
       |> assign(:nodes, nodes)
-      |> assign_form(Stories.change_node(node), :form)
+      |> assign_form(Nodes.change_node(node), :form)
       |> assign_form(
         Stories.change_choice(%Stories.Choice{
           choice_targets: [%Stories.ChoiceTarget{}]
@@ -43,7 +44,7 @@ defmodule AdventurerWeb.NodeLive.Show do
 
   def render(assigns) do
     ~H"""
-    <AdventurerWeb.PageHeader.render title={@page_title} />
+    <AdventurerWeb.PageHeader.render {assigns} />
     <div class="grid grid-cols-2 gap-8">
       <div>
         <AdventurerWeb.NodeLive.NodeForm.render form={@form} />
@@ -88,7 +89,7 @@ defmodule AdventurerWeb.NodeLive.Show do
 
     node = socket.assigns.node
 
-    case Stories.update_node(node, params) do
+    case Nodes.update_node(node, params) do
       {:ok, node} ->
         {:noreply,
          socket
@@ -103,7 +104,7 @@ defmodule AdventurerWeb.NodeLive.Show do
   def handle_event("save_choice", %{"choice" => params}, socket) do
     case Stories.create_choice(params) |> dbg do
       {:ok, choice} ->
-        node = Stories.get_node!(choice.node_id)
+        node = Nodes.get_node!(choice.node_id)
 
         {:noreply,
          socket

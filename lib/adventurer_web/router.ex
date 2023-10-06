@@ -13,22 +13,15 @@ defmodule AdventurerWeb.Router do
     plug :fetch_current_user
   end
 
-  pipeline :api do
-    plug :accepts, ["json"]
+  pipeline :graphql do
+    plug(:fetch_session)
+    plug(:put_secure_browser_headers)
+    plug(:fetch_current_user)
+    plug(AdventurerWeb.Context)
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", AdventurerWeb do
-  #   pipe_through :api
-  # end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:adventurer, :dev_routes) do
-    # If you want to use the LiveDashboard in production, you should put
-    # it behind authentication and allow only admins to access it.
-    # If your application does not have an admins-only section yet,
-    # you can use Plug.BasicAuth to set up some basic authentication
-    # as long as you are also using SSL (which you should anyway).
     import Phoenix.LiveDashboard.Router
 
     scope "/dev" do
@@ -37,6 +30,12 @@ defmodule AdventurerWeb.Router do
       live_dashboard "/dashboard", metrics: AdventurerWeb.Telemetry
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
+  end
+
+  scope "/graphql" do
+    pipe_through(:graphql)
+
+    forward("/", Absinthe.Plug, schema: AdventurerWeb.Schema)
   end
 
   ## Authentication routes
@@ -55,20 +54,27 @@ defmodule AdventurerWeb.Router do
     post "/users/log_in", UserSessionController, :create
   end
 
-  scope "/my", AdventurerWeb do
+  scope "/", AdventurerWeb do
     pipe_through [:browser, :require_authenticated_user]
 
     live_session :require_authenticated_user,
-      on_mount: [{AdventurerWeb.UserAuth, :ensure_authenticated}] do
-      live "/stories/new", Author.StoryLive.Index, :new
-      live "/stories/:id", Author.StoryLive.Show, :show
-      live "/stories/:id/preview", Author.StoryLive.Show, :preview
-      live "/stories/:id/nodes/new", NodeLive.New, :new
-      live "/stories/:id/nodes/:node_id", NodeLive.Show, :show
-      live "/stories/:id/nodes/:node_id/choices/new", NodeLive.Show, :new_choice
-      live "/users/settings", UserSettingsLive, :edit
-      live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
-      live "/stories", Author.StoryLive.Index, :index
+      on_mount: [
+        {AdventurerWeb.UserAuth, :ensure_authenticated},
+        {AdventurerWeb.Path, :put_path_in_socket}
+      ] do
+      scope "/my" do
+        live "/stories/new", Author.StoryLive.Index, :new
+        live("/stories/:id", Author.StoryLive.Show, :show)
+        live("/stories/:id/nodes", Author.NodeEditorLive, :edit)
+        live "/stories/:id/preview", Author.StoryLive.Show, :preview
+        live "/stories/:id/preview/nodes/:node_id", Author.StoryLive.Show, :preview
+        live "/stories/:id/nodes/new", NodeLive.New, :new
+        live("/stories/:id/nodes/:node_id", Author.NodeEditorLive, :edit)
+        live "/stories/:id/nodes/:node_id/choices/new", NodeLive.Show, :new_choice
+        live "/users/settings", UserSettingsLive, :edit
+        live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
+        live "/stories", Author.StoryLive.Index, :index
+      end
     end
   end
 
@@ -78,10 +84,14 @@ defmodule AdventurerWeb.Router do
     delete "/users/log_out", UserSessionController, :delete
 
     live_session :current_user,
-      on_mount: [{AdventurerWeb.UserAuth, :mount_current_user}] do
+      on_mount: [
+        {AdventurerWeb.UserAuth, :mount_current_user},
+        {AdventurerWeb.Path, :put_path_in_socket}
+      ] do
       live "/users/confirm/:token", UserConfirmationLive, :edit
       live "/users/confirm", UserConfirmationInstructionsLive, :new
 
+      live "/stories/:id/preview", StoryLive.Preview, :show
       live "/", StoryLive.Index, :index
     end
   end

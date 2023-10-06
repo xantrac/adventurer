@@ -1,6 +1,6 @@
 defmodule AdventurerWeb.NodeLive.New do
   alias Adventurer.Stories
-  alias Adventurer.Stories.Node
+  alias Adventurer.Nodes.Node
 
   use AdventurerWeb, :live_view
 
@@ -11,7 +11,7 @@ defmodule AdventurerWeb.NodeLive.New do
       socket
       |> assign(:page_title, "New Node")
       |> assign(:story, story)
-      |> assign_form(Stories.change_node(%Node{}))
+      |> assign_form(Adventurer.Nodes.change_node(%Node{}))
 
     if connected?(socket) do
       {:ok, push_event(socket, "initialize_editor", %{data: %{}})}
@@ -39,7 +39,7 @@ defmodule AdventurerWeb.NodeLive.New do
     %{params: params, story: story} = socket.assigns
     params = Map.merge(params, %{"body" => body, "story_id" => story.id})
 
-    {:ok, node} = Stories.create_node(params)
+    {:ok, node} = Adventurer.Nodes.create_node(params)
 
     {:noreply, socket |> redirect(to: ~p"/my/stories/#{story.id}/nodes/#{node.id}")}
   end

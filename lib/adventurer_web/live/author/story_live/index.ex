@@ -6,7 +6,11 @@ defmodule AdventurerWeb.Author.StoryLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, stream(socket, :stories, Stories.list_stories())}
+    current_user = socket.assigns.current_user
+
+    {:ok,
+     assign(socket, current_user: current_user)
+     |> stream(:stories, Stories.list_stories(current_user))}
   end
 
   @impl true
@@ -28,7 +32,7 @@ defmodule AdventurerWeb.Author.StoryLive.Index do
 
   defp apply_action(socket, :index, _params) do
     socket
-    |> assign(:page_title, "Listing Stories")
+    |> assign(:page_title, "My Stories")
     |> assign(:story, nil)
   end
 

@@ -40,9 +40,7 @@ defmodule Adventurer.StoriesFixtures do
   def action_fixture(attrs \\ %{}) do
     {:ok, action} =
       attrs
-      |> Enum.into(%{
-
-      })
+      |> Enum.into(%{})
       |> Adventurer.Stories.create_action()
 
     action

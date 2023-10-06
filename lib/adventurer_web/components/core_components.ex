@@ -222,6 +222,7 @@ defmodule AdventurerWeb.CoreComponents do
   """
   attr :type, :string, default: nil
   attr :class, :string, default: nil
+  attr :icon, :string, default: nil
   attr :rest, :global, include: ~w(disabled form name value)
 
   slot :inner_block, required: true
@@ -237,6 +238,9 @@ defmodule AdventurerWeb.CoreComponents do
       ]}
       {@rest}
     >
+      <%= if @icon do %>
+        <.icon name={@icon} class="-ml-0.5 mr-1.5 h-5 w-5" />
+      <% end %>
       <%= render_slot(@inner_block) %>
     </button>
     """

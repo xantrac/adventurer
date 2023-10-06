@@ -1,12 +1,12 @@
 defmodule Adventurer.Stories.ChoiceTarget do
-  use Ecto.Schema
+  use Adventurer.Schema
   import Ecto.Changeset
 
   schema "choice_targets" do
     field :probability, :integer, default: 100
 
     belongs_to :choice, Adventurer.Stories.Choice
-    belongs_to :target_node, Adventurer.Stories.Node
+    belongs_to :target_node, Adventurer.Nodes.Node
 
     timestamps()
   end

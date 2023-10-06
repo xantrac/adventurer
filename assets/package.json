@@ -1,7 +1,17 @@
 {
   "dependencies": {
+    "@apollo/client": "^3.8.5",
     "@editorjs/editorjs": "^2.28.0",
+    "@headlessui/react": "^1.7.17",
     "editorjs-html": "^3.4.3",
-    "trix": "^2.0.5"
+    "graphql": "^16.8.1",
+    "kitsu-core": "^10.1.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.16.0",
+    "react-tooltip": "^5.21.5",
+    "reactflow": "^11.8.3",
+    "trix": "^2.0.5",
+    "urql": "^4.0.5"
   }
 }

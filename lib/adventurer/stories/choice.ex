@@ -1,10 +1,10 @@
 defmodule Adventurer.Stories.Choice do
-  use Ecto.Schema
+  use Adventurer.Schema
   import Ecto.Changeset
 
   schema "choices" do
     field :description, :string
-    belongs_to(:node, Adventurer.Stories.Node)
+    belongs_to(:node, Adventurer.Nodes.Node)
     has_many(:choice_targets, Adventurer.Stories.ChoiceTarget)
 
     timestamps()

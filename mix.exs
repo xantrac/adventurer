@@ -24,6 +24,7 @@ defmodule Adventurer.MixProject do
   end
 
   # Specifies which paths to compile per environment.
+  defp elixirc_paths(:dev), do: ["lib", "test/support"]
   defp elixirc_paths(:test), do: ["lib", "test/support"]
   defp elixirc_paths(_), do: ["lib"]
 
@@ -32,10 +33,14 @@ defmodule Adventurer.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:absinthe, "~> 1.7"},
+      {:absinthe_plug, "~> 1.5"},
       {:bcrypt_elixir, "~> 3.0"},
       {:phoenix, "~> 1.7.7"},
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.10"},
+      {:ex_machina, "~> 2.7.0"},
+      {:faker, "~> 0.17", only: [:dev, :test]},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 3.3"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
@@ -43,6 +48,8 @@ defmodule Adventurer.MixProject do
       {:floki, ">= 0.30.0", only: :test},
       {:phoenix_live_dashboard, "~> 0.8.0"},
       {:esbuild, "~> 0.7", runtime: Mix.env() == :dev},
+      {:tesla, "~> 1.4"},
+      {:hackney, "~> 1.17"},
       {:tailwind, "~> 0.2.0", runtime: Mix.env() == :dev},
       {:swoosh, "~> 1.3"},
       {:finch, "~> 0.13"},
@@ -50,7 +57,9 @@ defmodule Adventurer.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
-      {:plug_cowboy, "~> 2.5"}
+      {:jsonapi, "~> 1.6.3"},
+      {:plug_cowboy, "~> 2.5"},
+      {:timex, "~> 3.7.11"}
     ]
   end
 

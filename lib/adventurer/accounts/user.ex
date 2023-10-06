@@ -1,8 +1,9 @@
 defmodule Adventurer.Accounts.User do
-  use Ecto.Schema
+  use Adventurer.Schema
   import Ecto.Changeset
 
   schema "users" do
+    field :username, :string
     field :email, :string
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
@@ -36,7 +37,7 @@ defmodule Adventurer.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password])
+    |> cast(attrs, [:email, :password, :username])
     |> validate_email(opts)
     |> validate_password(opts)
   end
