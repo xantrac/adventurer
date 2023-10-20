@@ -3,16 +3,12 @@ import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import topbar from "../vendor/topbar";
 import { mount } from "./mounter";
-import { deserialise } from "kitsu-core";
 
 let Hooks = {};
 
 Hooks.NodesBuilder = {
   mounted() {
     this.unmountComponent = mount(this.el.id, this.opts());
-    this.handleEvent("react.update_story", ({ story }) => {
-      mount(this.el.id, { story: deserialise(story) });
-    });
   },
 
   showNodeEditor(item) {

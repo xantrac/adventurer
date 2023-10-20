@@ -21,7 +21,7 @@ defmodule Adventurer.Stories do
     Story
     |> where([s], s.user_id == ^user.id)
     |> Repo.get!(id)
-    |> Repo.preload(nodes: [choices: :choice_targets])
+    |> Repo.preload([:nodes, :choices])
   end
 
   def get_story_run(%{id: id, user_id: user_id}) do
@@ -53,7 +53,7 @@ defmodule Adventurer.Stories do
       Adventurer.Nodes.Node.changeset(%Adventurer.Nodes.Node{}, %{
         story_id: story.id,
         title: "Prologue",
-        body: %{}
+        body: "<p>Once upon a time...</p>"
       })
     end)
     |> Ecto.Multi.update(:updated_story, fn %{story: story, starting_node: starting_node} ->

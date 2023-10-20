@@ -4,8 +4,10 @@ defmodule Adventurer.Stories.Choice do
 
   schema "choices" do
     field :description, :string
-    belongs_to(:node, Adventurer.Nodes.Node)
-    has_many(:choice_targets, Adventurer.Stories.ChoiceTarget)
+    belongs_to(:origin_node, Adventurer.Nodes.Node)
+    belongs_to(:target_node, Adventurer.Nodes.Node)
+
+    belongs_to(:story, Adventurer.Stories.Story)
 
     timestamps()
   end
@@ -13,8 +15,7 @@ defmodule Adventurer.Stories.Choice do
   @doc false
   def changeset(action, attrs) do
     action
-    |> cast(attrs, [:description, :node_id])
-    |> validate_required([:description, :node_id])
-    |> cast_assoc(:choice_targets)
+    |> cast(attrs, [:description, :origin_node_id, :target_node_id])
+    |> validate_required([:description, :origin_node_id, :target_node_id])
   end
 end

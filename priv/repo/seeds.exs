@@ -74,20 +74,14 @@ third_node =
       build(:choice,
         description:
           "Follow the path that leads uphill, hoping to gain a vantage point and get a better view of your surroundings",
-        choice_targets: [
-          build(:choice_target,
-            target_node: seventh_node
-          )
-        ]
+        target_node: seventh_node,
+        story: story
       ),
       build(:choice,
         description:
           "Continue deeper into the forest, searching for signs of shelter or civilization.",
-        choice_targets: [
-          build(:choice_target,
-            target_node: sixth_node
-          )
-        ]
+        target_node: sixth_node,
+        story: story
       )
     ]
   )
@@ -130,20 +124,14 @@ jungle or head back to the beach. What will you do?"
       build(:choice,
         description:
           "Decide to follow the note's instructions and head into the jungle, determined to uncover the island's secrets.",
-        choice_targets: [
-          build(:choice_target,
-            target_node: fifth_node
-          )
-        ]
+        target_node: fifth_node,
+        story: story
       ),
       build(:choice,
         description:
           "Choose to disregard the note's advice and search for signs of civilization or other survivors along the beach",
-        choice_targets: [
-          build(:choice_target,
-            target_node: sixth_node
-          )
-        ]
+        target_node: sixth_node,
+        story: story
       )
     ]
   )
@@ -171,31 +159,22 @@ the fading light, you notice that it bears no address, just your name written ne
     choices: [
       build(:choice,
         description: "Open the envelope to see if it contains any clues about your situation.",
-        choice_targets: [
-          build(:choice_target,
-            target_node: second_node
-          )
-        ]
+        target_node: second_node,
+        story: story
       ),
       build(:choice,
         description:
           "Stand up and survey your surroundings, hoping to find signs of civilization or a path leading inland",
-        choice_targets: [
-          build(:choice_target,
-            target_node: third_node
-          )
-        ]
+        target_node: third_node,
+        story: story
       ),
       build(:choice,
         description:
           "Decide to head towards the dense forest that lines the edge of the beach, hoping to find food, shelter, or some answers",
-        choice_targets: [
-          build(:choice_target,
-            target_node: fourth_node
-          )
-        ]
+        target_node: fourth_node,
+        story: story
       )
     ]
   )
 
-Adventurer.Stories.update_story(story, %{start_node_id: first_node.id})
+Adventurer.Stories.update_story(story, %{starting_node_id: first_node.id})

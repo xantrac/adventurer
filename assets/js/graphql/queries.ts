@@ -10,7 +10,14 @@ const GET_STORY = gql`
       nodes {
         id
         title
+        body
         storyId
+      }
+      choices {
+        id
+        description
+        originNodeId
+        targetNodeId
       }
     }
   }

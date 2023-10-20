@@ -4,12 +4,12 @@ defmodule Adventurer.Nodes.Node do
 
   schema "nodes" do
     field :title, :string
-    field :body, :map
+    field :body, :string
     field :is_final_node, :boolean, default: false
-    field :html_body, :string, virtual: true
 
     belongs_to :story, Adventurer.Stories.Story
-    has_many :choices, Adventurer.Stories.Choice
+    has_many :choices, Adventurer.Stories.Choice, foreign_key: :origin_node_id
+    has_many :choice_targets, Adventurer.Stories.Choice, foreign_key: :target_node_id
 
     timestamps()
   end

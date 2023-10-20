@@ -4,7 +4,7 @@ defmodule Adventurer.Repo.Migrations.CreateNodes do
   def change do
     create table(:nodes) do
       add :title, :string
-      add :body, :map, default: %{}
+      add :body, :text
       add :story_id, references(:stories, on_delete: :nothing), null: false
       add :is_final_node, :boolean, default: false
 

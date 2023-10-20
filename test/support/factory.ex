@@ -22,43 +22,21 @@ defmodule Adventurer.Factory do
   def node_factory do
     %Adventurer.Nodes.Node{
       title: Faker.Lorem.sentence(),
-      body: %{
-        id: "zbGZFPM-iI",
-        type: "paragraph",
-        data: %{
-          text: "Some text"
-        }
-      }
+      body: "<p>#{Faker.Lorem.paragraph()}</p>"
     }
   end
 
   def generate_node_body(paragraphs_list) do
-    blocks =
-      Enum.map(paragraphs_list, fn paragraph ->
-        %{
-          id: "zbGZFPM-iI",
-          type: "paragraph",
-          data: %{
-            text: paragraph
-          }
-        }
-      end)
-
-    %{
-      time: 1_607_080_800_000,
-      blocks: blocks,
-      version: "2.8.1"
-    }
+    Enum.map(paragraphs_list, fn paragraph ->
+      "<p>#{paragraph}</p>"
+    end)
+    |> Enum.join("")
   end
 
   def choice_factory do
     %Adventurer.Stories.Choice{
       description: Faker.Lorem.sentence()
     }
-  end
-
-  def choice_target_factory do
-    %Adventurer.Stories.ChoiceTarget{}
   end
 
   def set_password(user, password) do

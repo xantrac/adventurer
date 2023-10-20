@@ -1,5 +1,5 @@
 defmodule AdventurerWeb.Author.NodeEditorLive do
-  use AdventurerWeb, :live_view
+  use Phoenix.LiveView, layout: false
 
   def render(assigns) do
     ~H"""

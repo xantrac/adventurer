@@ -68,9 +68,7 @@ defmodule AdventurerWeb.Router do
         live("/stories/:id/nodes", Author.NodeEditorLive, :edit)
         live "/stories/:id/preview", Author.StoryLive.Show, :preview
         live "/stories/:id/preview/nodes/:node_id", Author.StoryLive.Show, :preview
-        live "/stories/:id/nodes/new", NodeLive.New, :new
         live("/stories/:id/nodes/:node_id", Author.NodeEditorLive, :edit)
-        live "/stories/:id/nodes/:node_id/choices/new", NodeLive.Show, :new_choice
         live "/users/settings", UserSettingsLive, :edit
         live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
         live "/stories", Author.StoryLive.Index, :index

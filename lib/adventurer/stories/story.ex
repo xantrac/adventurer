@@ -11,6 +11,7 @@ defmodule Adventurer.Stories.Story do
 
     belongs_to :user, Adventurer.Accounts.User
     has_many :nodes, Adventurer.Nodes.Node
+    has_many :choices, Adventurer.Stories.Choice
 
     timestamps()
   end
